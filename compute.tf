@@ -1,7 +1,7 @@
 resource "aws_instance" "keycloak-master-instance" {
-  #ami                    = data.aws_ami.amazon-linux-2.id
+  ami                    = data.aws_ami.rocky8.id
   #ami                    = "ami-0ce24f7d9f52a2d88" #Rocky 8  
-  ami           = var.instance_ami
+  #ami           = var.instance_ami
   instance_type = var.keycloak_master_instance_type
 
   metadata_options {
@@ -17,8 +17,7 @@ resource "aws_instance" "keycloak-master-instance" {
   associate_public_ip_address = true
 
   connection {
-    type = "ssh"
-    #user        = "ec2-user"
+    type        = "ssh"
     user        = "rocky"
     host        = self.public_ip
     private_key = tls_private_key.controller_private_key.private_key_pem
@@ -27,7 +26,7 @@ resource "aws_instance" "keycloak-master-instance" {
   user_data = file("init_kc_master_rocky_docker.sh")
 
   root_block_device {
-    volume_size = 500
+    volume_size = 128
     encrypted   = true
     kms_key_id  = aws_kms_key.keycloakkms.arn
 
@@ -38,7 +37,7 @@ resource "aws_instance" "keycloak-master-instance" {
 
   ebs_block_device {
     device_name = "/dev/xvdf"
-    volume_size = 256
+    volume_size = 8
     encrypted   = true
     kms_key_id  = aws_kms_key.keycloakkms.arn
 
@@ -83,7 +82,7 @@ resource "aws_instance" "keycloak-worker-instance" {
 
   }
 
-  user_data = file("init_kc_worker_rocky.sh")
+  user_data = file("init_kc_worker_rocky_docker.sh")
 
   root_block_device {
     volume_size = 128
@@ -118,12 +117,12 @@ output "keycloak_worker_instance_public_dns" {
 }
 */
 resource "aws_security_group" "sg_keycloak" {
-  name        = "sg_keycloak_${var.entity}"
-  description = "${var.entity} - Allows SSH and web browsing"
+  name        = "sg_keycloak_${var.entity}-${var.environment}"
+  description = "${var.entity}-${var.environment} - Allows SSH and web browsing"
   vpc_id      = aws_vpc.main-vpc.id
 
   ingress {
-    description = "${var.entity} - HTTP traffic from qcs fiber, qcs coax, private lan"
+    description = "${var.entity}-${var.environment} - HTTP traffic from qcs fiber, qcs coax, private lan"
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
@@ -131,7 +130,7 @@ resource "aws_security_group" "sg_keycloak" {
   }
 
   ingress {
-    description     = "${var.entity} - HTTP traffic from lb - tf created - 8080"
+    description     = "${var.entity}-${var.environment} - HTTP traffic from lb - tf created - 8080"
     from_port       = 8080
     to_port         = 8080
     protocol        = "tcp"
@@ -139,7 +138,7 @@ resource "aws_security_group" "sg_keycloak" {
   }
 
   ingress {
-    description = "${var.entity} - SSH from qcs fiber & qcs coax, private network"
+    description = "${var.entity}-${var.environment} - SSH from qcs fiber & qcs coax, private network"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -147,7 +146,7 @@ resource "aws_security_group" "sg_keycloak" {
   }
 
   ingress {
-    description = "${var.entity} - Allow ping  to master from private LAN"
+    description = "${var.entity}-${var.environment} - Allow ping  to master from private LAN"
     from_port   = -1
     to_port     = -1
     protocol    = "icmp"
@@ -156,7 +155,7 @@ resource "aws_security_group" "sg_keycloak" {
   }
 
   ingress {
-    description = "${var.entity} - Allow keycloak ports"
+    description = "${var.entity}-${var.environment} - Allow keycloak ports"
     from_port   = 8443
     to_port     = 8443
     protocol    = "tcp"
@@ -164,7 +163,7 @@ resource "aws_security_group" "sg_keycloak" {
   }
 
   ingress {
-    description     = "${var.entity} - HTTP traffic from lb - tf created - 8443"
+    description     = "${var.entity}-${var.environment} - HTTP traffic from lb - tf created - 8443"
     from_port       = 8443
     to_port         = 8443
     protocol        = "tcp"
@@ -172,7 +171,7 @@ resource "aws_security_group" "sg_keycloak" {
   }
 
   ingress {
-    description = "${var.entity} - Allow postgres ports"
+    description = "${var.entity}-${var.environment} - Allow postgres ports"
     from_port   = 5432
     to_port     = 5432
     protocol    = "tcp"
@@ -180,7 +179,7 @@ resource "aws_security_group" "sg_keycloak" {
   }
 
   egress {
-    description = "${var.entity} - egress"
+    description = "${var.entity}-${var.environment} - egress"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -188,14 +187,14 @@ resource "aws_security_group" "sg_keycloak" {
   }
 
   tags = {
-    Name = "sg_${var.entity}"
+    Name = "sg_${var.entity}-${var.environment}"
   }
 }
 
 #Required for frontend.tf, but referenced in sg_keycloak
 resource "aws_security_group" "sg_lb_keycloak" {
-  name        = "${var.entity}-qcs-loadbalancer-tf"
-  description = "${var.entity} - Allows http(s) web browsing from WHITELISTed IPs"
+  name        = "${var.entity}-${var.environment}-qcs-loadbalancer-tf"
+  description = "${var.entity}-${var.environment} - Allows http(s) web browsing from WHITELISTed IPs"
   vpc_id      = aws_vpc.main-vpc.id
 
   ingress {
@@ -203,7 +202,7 @@ resource "aws_security_group" "sg_lb_keycloak" {
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = [var.static_coax, var.static_fiber]
-    description = "${var.entity} - HTTP from qcs static coax, fiber, ${var.entity} office"
+    description = "${var.entity}-${var.environment} - HTTP from qcs static coax, fiber, ${var.entity} office"
   }
 
   ingress {
@@ -211,11 +210,11 @@ resource "aws_security_group" "sg_lb_keycloak" {
     to_port     = 443
     protocol    = "tcp"
     cidr_blocks = [var.static_coax, var.static_fiber]
-    description = "${var.entity} - HTTPS from qcs static coax, fiber, ${var.entity} office"
+    description = "${var.entity}-${var.environment} - HTTPS from qcs static coax, fiber, ${var.entity} office"
   }
 
   egress {
-    description = "${var.entity} - egress"
+    description = "${var.entity}-${var.environment} - egress"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -223,6 +222,6 @@ resource "aws_security_group" "sg_lb_keycloak" {
   }
 
   tags = {
-    Name = "sg_lb_${var.entity}"
+    Name = "sg_lb_${var.entity}-${var.environment}"
   }
 }
