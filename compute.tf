@@ -1,6 +1,5 @@
 resource "aws_instance" "keycloak-master-instance" {
-  ami                    = data.aws_ami.rocky8.id
-  #ami                    = "ami-0ce24f7d9f52a2d88" #Rocky 8  
+  ami                    = data.aws_ami.rocky8.id 
   #ami           = var.instance_ami
   instance_type = var.keycloak_master_instance_type
 

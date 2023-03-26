@@ -32,7 +32,8 @@ variable "keycloak_worker_instance_type" {
 }
 
 variable "instance_ami" {
-  default = "ami-004b161a1cceb1ceb" #Rocky 8 asof 20230302 us-east-1
+  #default = "ami-004b161a1cceb1ceb" #Rocky 8 asof 20230302 us-east-1
+  default=  "ami-0ce24f7d9f52a2d88" #Rocky 8 us-east-2
 }
 
 variable "static_fiber" {
