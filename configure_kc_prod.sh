@@ -29,5 +29,7 @@ KC_PATH="/opt/keycloak/$KC_VERSION"
 $KC_PATH/bin/kc.sh build --db postgres
 $KC_PATH/bin/kc.sh start --optimized --hostname-strict-backchannel=true --https-protocols=TLSv1.3,TLSv1.2 --hostname-strict-https=true --hostname-strict=false 
 
+echo "Manually edit hosts file to include dynamic localhost IP to fix loading admin console spinning"
+
 #Need to view https, http does not work at all
 #https://3.144.37.119:8443/

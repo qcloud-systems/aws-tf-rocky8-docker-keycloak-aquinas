@@ -113,7 +113,7 @@ echo  "/dev/xvdf       /var/opt/keycloak        xfs     defaults,noatime        
 sudo mount -a
 
 echo "Configure hosts file #/etc/hosts"
-sudo sed -i "s;127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4;127.0.0.1   localhost keycloak.local:8443 socrates.villasfoundation.com:8443 localdomain4;g" /etc/hosts
+sudo sed -i "s;127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4;127.0.0.1   localhost keycloak.local:8443 aquinas.villasfoundation.com:8443 localdomain4;g" /etc/hosts
 
 echo "Javascript must be enabled to run this app https://stackoverflow.com/questions/8205369/installing-npm-on-aws-ec2"
 dnf update -y

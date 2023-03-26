@@ -3,7 +3,7 @@ resource "aws_vpc" "main-vpc" {
   enable_dns_hostnames = true
   tags = {
     Name   = "${var.entity}-${var.environment}-VPC"
-    gt-use = "main-vpc"
+    qcs-use = "main-vpc"
   }
 }
 resource "aws_subnet" "public-subnet-1" {
@@ -12,7 +12,7 @@ resource "aws_subnet" "public-subnet-1" {
   availability_zone = "${var.region}a"
   tags = {
     Name   = "${var.entity}-${var.environment}-Public-Subnet-1"
-    gt-use = "public-subnet1"
+    qcs-use = "public-subnet1"
   }
 }
 resource "aws_subnet" "public-subnet-2" {
@@ -21,14 +21,14 @@ resource "aws_subnet" "public-subnet-2" {
   availability_zone = "${var.region}b" #may need to change for eu-west-2 during apply usually b
   tags = {
     Name   = "${var.entity}-${var.environment}-Public-Subnet-2"
-    gt-use = "public-subnet2"
+    qcs-use = "public-subnet2"
   }
 }
 resource "aws_route_table" "public-route-table" {
   vpc_id = aws_vpc.main-vpc.id
   tags = {
     Name   = "${var.entity}-${var.environment}-Public-RouteTable"
-    gt-use = "public-routetable"
+    qcs-use = "public-routetable"
   }
 }
 resource "aws_route_table_association" "public-route-1-association" {
@@ -45,7 +45,7 @@ resource "aws_subnet" "private-subnet-1" {
   availability_zone = "${var.region}a"
   tags = {
     Name   = "${var.entity}-${var.environment}-Private-Subnet-1"
-    gt-use = "private-subnet1"
+    qcs-use = "private-subnet1"
   }
 }
 resource "aws_subnet" "private-subnet-2" {
@@ -54,14 +54,14 @@ resource "aws_subnet" "private-subnet-2" {
   availability_zone = "${var.region}b" #may need to change for eu-west-2 during apply usually b
   tags = {
     Name   = "${var.entity}-${var.environment}-Private-Subnet-2"
-    gt-use = "private-subnet2"
+    qcs-use = "private-subnet2"
   }
 }
 resource "aws_route_table" "private-route-table" {
   vpc_id = aws_vpc.main-vpc.id
   tags = {
     Name   = "${var.entity}-${var.environment}-Private-RouteTable"
-    gt-use = "private-routetable"
+    qcs-use = "private-routetable"
   }
 }
 resource "aws_route_table_association" "private-route-1-association" {
@@ -85,7 +85,7 @@ resource "aws_nat_gateway" "nat-gw" {
   subnet_id     = aws_subnet.public-subnet-1.id
   tags = {
     Name   = "${var.entity}-${var.environment}-NATGW"
-    gt-use = "nat-gw"
+    qcs-use = "nat-gw"
   }
   # Per tf provider page, To ensure proper ordering, it is recommended to add an explicit dependency
   # on the Internet Gateway for the VPC.
@@ -103,7 +103,7 @@ resource "aws_internet_gateway" "main-igw" {
   vpc_id = aws_vpc.main-vpc.id
   tags = {
     Name   = "${var.entity}-${var.environment}-IGW"
-    gt-use = "main-igw"
+    qcs-use = "main-igw"
   }
 }
 resource "aws_route" "public-internet-igw-route" {
