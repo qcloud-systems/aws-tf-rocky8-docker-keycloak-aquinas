@@ -1,4 +1,4 @@
-###### Terraform Keycloak for cluster running mode
+###### Terraform Keycloak for cluster running Docker mode
 ```
 Dependencies: 
 echo $SHELL

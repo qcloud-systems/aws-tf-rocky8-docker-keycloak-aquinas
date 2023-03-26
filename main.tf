@@ -85,7 +85,24 @@ data "aws_ami" "amazon-linux-2" {
     ]
   }
 }
-
+data "aws_ami" "rocky8" {
+  most_recent = true
+  owners      = ["679593333241"]
+  filter {
+    name = "name"
+    values = [
+      "*Rocky-8*x86_64*",
+    ]
+  }
+/*  
+  filter {
+    name = "owner-alias"
+    values = [
+      "amazon",
+    ]
+  }
+*/  
+}
 module "awsbackup" {
   source = "./modules/awsbackup"
 
