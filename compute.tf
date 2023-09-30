@@ -25,7 +25,7 @@ resource "aws_instance" "keycloak-master-instance" {
   user_data = file("init_kc_master_rocky_docker.sh")
 
   root_block_device {
-    volume_size = 128
+    volume_size = 22
     encrypted   = true
     kms_key_id  = aws_kms_key.keycloakkms.arn
 
