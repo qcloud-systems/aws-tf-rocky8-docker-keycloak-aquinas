@@ -23,11 +23,11 @@ variable "private_subnet_2_cidr" {
   description = "Private Subnet 2 cidr block"
 }
 variable "keycloak_master_instance_type" {
-  #default = "t3.medium"
-  default = "t2.xlarge" #4vpcu 16gb ram .01856/hr .110 1yrreserved compare to t2.large 2vpcu 8gb ram .0928/hr .055 1yrreserved
+  default = "t2.micro"
+  #default = "t2.xlarge" #4vpcu 16gb ram .01856/hr .110 1yrreserved compare to t2.large 2vpcu 8gb ram .0928/hr .055 1yrreserved
 }
 variable "keycloak_worker_instance_type" {
-  default = "t2.xlarge"
+  default = "t2.micro"
   #default = "t2.xlarge" #4vpcu 16gb ram .01856/hr .110 1yrreserved
 }
 
