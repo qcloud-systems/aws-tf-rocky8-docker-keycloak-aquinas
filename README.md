@@ -1,5 +1,6 @@
 ### AWS Terraform Keycloak for cluster running Docker mode
 ###### After initial Docker provisioning, configure_kc_prod.sh
+Setup with AWS free tier eligible 30 GB HD and t2.micro ec2 instance
 ```
 /etc/hosts
 keycloak.local
