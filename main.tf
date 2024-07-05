@@ -103,10 +103,9 @@ data "aws_ami" "rocky8" {
   }
 */  
 }
-module "awsbackup" {
-  source = "./modules/awsbackup"
-
-}
+#module "awsbackup" {
+#  source = "./modules/awsbackup"
+#}
 
 locals {
 }
