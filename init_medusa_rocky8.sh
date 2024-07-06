@@ -1,8 +1,4 @@
 #!/bin/bash
-KC_HOME="/opt/keycloak/"
-KC_VERSION="keycloak-20.0.3"
-VERSION="20.0.3"
-PSQL_JAR="postgresql-42.5.4.jar"
 
 echo "Update Linux, dnf, & Instal Java 11"
 sudo yum update -y
