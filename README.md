@@ -9,8 +9,6 @@ aquinas.villasfoundation.com
 Keycloak CLI commands:
 bin/kc.sh build --db postgres #try this one --transaction-xa-enabled=false
 bin/kc.sh start --optimized --hostname-strict-backchannel=true --https-protocols=TLSv1.3,TLSv1.2 --hostname-strict-https=true 
-
-K3yCl0@kD1sc0ur53
 ```
 ###### Dependencies: 
 ```
