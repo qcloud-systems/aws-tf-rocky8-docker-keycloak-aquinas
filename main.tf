@@ -22,17 +22,17 @@ terraform {
   }
 
   backend "s3" {
-    bucket  = "qcloud-tf"
+    bucket  = "state-tf"
     key     = "aquinas/terraform.tfstate"
     region  = "us-east-2" #region of s3 bucket (NOT ec2 region)
     encrypt = true        #encrypted s3 file
-    #shared_credentials_file = "/home/engineer/.aws/credentials"
+    #shared_credentials_file = "/home/user/.aws/credentials"
     #profile                 = "default"
   }
 
   # FOR USE WITH TERRAFORM CLOUD
   #cloud {
-  #  organization = "gt-gvillas"
+  #  organization = "orgname"
   #  workspaces {
   #    name = "keycloak-prod"
   #  }
@@ -49,7 +49,7 @@ provider "aws" {
       Environment = var.environment
     }
   }
-  #shared_credentials_file = ["/home/engineer/.aws/credentials"]
+  #shared_credentials_file = ["/home/user/.aws/credentials"]
   #profile                  = "default"
 }
 
