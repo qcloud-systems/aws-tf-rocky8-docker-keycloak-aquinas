@@ -50,9 +50,9 @@ variable "nat_gw_eip" {
 # Required for front-end.tf
 variable "site_certificate_arn" {
   description = "AWS GUI generated multi-tennant site certificate fqdn"
-  default     = "" #aquinas.villasfoundation.com us-east-2
+  default     = ""
 }
 variable "site_zone_id" {
   description = "AWS auto created hosted ZONEID"
-  default     = "Z0046415ZLSZB4PDIUHH" #villasfoundation.com hosted zone
+  default     = ""
 }
